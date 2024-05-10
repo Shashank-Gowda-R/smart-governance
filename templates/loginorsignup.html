@@ -14,13 +14,13 @@
     <div class="forms-container">
       <div class="signin-signup">
         <form method="post" class="sign-in-form">
-          <h2 class="title">Sign in</h2>
+          <h2 class="title">Sign In</h2>
           {% with messages = get_flashed_messages() %}
-            {% if messages %}
-              {% for message in messages %}
-              <p>{{ message }}</p>
-              {% endfor %}
-            {% endif %}
+          {% if messages %}
+          {% for message in messages %}
+          <p>{{ message }}</p>
+          {% endfor %}
+          {% endif %}
           {% endwith %}
           <div class="input-field">
             <i class="fas fa-user"></i>
@@ -30,34 +30,14 @@
             <i class="fas fa-lock"></i>
             <input type="password" name="l_password" placeholder="Password" />
           </div>
-          <input type="submit" name="submit" class="btn solid" value="log_in" />
-
-
-          <!-- login using social media -->
-          <!-- <p class="social-text">Or Sign in with social platforms</p>
-            <div class="social-media">
-              <a href="#" class="social-icon">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-            </div> -->
-
-
-
+          <input type="submit" name="submit" class="btn solid" value="Sign In" />
         </form>
+
         <form method="post" class="sign-up-form">
-          <h2 class="title">Sign up</h2>
+          <h2 class="title">Sign Up</h2>
           <div class="input-field">
             <i class="fas fa-user"></i>
-            <input type="text" placeholder="Decide Your Username" name="s_username" />
+            <input type="text" placeholder="Username" name="s_username" />
           </div>
           <div class="input-field">
             <i class="fas fa-user"></i>
@@ -69,7 +49,7 @@
           </div>
           <div class="input-field">
             <i class="fas fa-user"></i>
-            <input type="tel" id="phone" name="s_phoneno" placeholder="Pho Number" required>
+            <input type="tel" id="phone" name="s_phoneno" placeholder="Phone Number" required>
           </div>
 
           <div class="input-field">
@@ -78,29 +58,19 @@
           </div>
           <div class="input-field">
             <i class="fas fa-lock"></i>
-            <input type="password" placeholder="Password (min 8 character include number and special characters" name="s_password" />
+            <input type="password" id="password" placeholder="Password min 8 characters" name="s_password"
+              oninput="validatePassword()" required />
           </div>
-          <input type="submit" class="btn" value="Sign_up" name="submit" />
+          <div id="passwordError" style="color: red;"></div>
+          <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="confirm_password" placeholder="Confirm Password" name="confirm_password"
+              oninput="validateConfirmPassword()" required />
+          </div>
+          <div id="passwordConfError" style="color: red;"></div>
 
 
-          <!-- Signup using Social media -->
-          <!-- <p class="social-text">Or Sign up with social platforms</p>
-            <div class="social-media">
-              <a href="#" class="social-icon">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-            </div> -->
-
-
+          <input type="submit" class="btn" value="Sign Up" name="submit" />
         </form>
       </div>
     </div>
@@ -123,7 +93,7 @@
           <h3>One of us ?</h3>
           <p>
             Already have an Account ?
-                
+
           </p>
           <button class="btn transparent" id="sign-in-btn">
             Sign in
@@ -136,6 +106,52 @@
 
 
   <script src="{{ url_for('static', filename='ls_app.js') }}"></script>
+  <script>
+    function validatePassword() {
+      var password = document.getElementById("password").value;
+
+      var uppercaseRegex = /[A-Z]/;
+      var numberRegex = /\d/;
+      var specialCharacterRegex = /[^\da-zA-Z]/;
+
+      var errors = [];
+
+      if (password.length < 8) {
+        errors.push("Password must be at least 8 characters long");
+      } else if (!uppercaseRegex.test(password)) {
+        errors.push("Password should contain at least one capital letter");
+      } else if (!numberRegex.test(password)) {
+        errors.push("Password should contain at least one number");
+      } else if (!specialCharacterRegex.test(password)) {
+        errors.push("Password should contain at least one special character");
+      }
+
+      if (errors.length > 0) {
+        var errorMessage = errors[0];
+        document.getElementById("password").setCustomValidity(errorMessage);
+        document.getElementById("passwordError").innerText = errorMessage;
+      } else {
+        document.getElementById("password").setCustomValidity("");
+        document.getElementById("passwordError").innerText = "";
+      }
+    }
+
+    function validateConfirmPassword() {
+      var password = document.getElementById("password").value;
+      var confirmPasswordField = document.getElementById("confirm_password");
+      var confirmPassword = confirmPasswordField.value;
+
+      if (password !== confirmPassword) {
+        confirmPasswordField.setCustomValidity("Passwords do not match");
+        document.getElementById("passwordConfError").innerText = "Passwords do not match";
+      } else {
+        confirmPasswordField.setCustomValidity("");
+        document.getElementById("passwordConfError").innerText = "";
+      }
+    }
+
+  </script>
+
 </body>
 
 </html>

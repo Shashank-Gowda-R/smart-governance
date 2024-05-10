@@ -44,7 +44,7 @@
         <!-- Heading include username from database and nav bar -->
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-start mb-0">{{username}}</h3>
+             s   <h3 class="float-md-start mb-0">{{username}}</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link fw-bold py-1 px-0" href="/home">Home</a>
                     <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="/home#pay">Pay</a>
@@ -59,33 +59,46 @@
 
         <!-- main sectrion content -->
         <main class="px-3">
-            <div>
-                <h2 class="hr-lines"> Pay loan </h2>
-                <h3 class="bal">Total Debt : {{cur_ln.debt|round(2)}}</h3>
-                <h3 class="bal">Credits available : {{cur_ln.credits|round(2)}}</h3>
-                <h3 class="bal">Score : {{cur_ln.score|round(2)}}</h3>
-                <h3 class="bal">Balance : {{bal|round(2)}}</h3>
-            </div>
+            <!-- <div>
+                <h2 class="hr-lines"> {{message}} </h2>
+            </div> -->
 
-            <form action="" method="post">
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        {% for message in messages %}
-                        <p>{{ message }}</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-                <!-- <label for="">username</label> -->
-                <!-- <br>
-                <input type="text" name="username" id=""> -->
-                <br><br>
-                <label for="">amount</label>
+
+                <!-- <label for="">amount</label>
                 <br>
                 <input type="number" name="amount" id="">
-                <br><br>
-                <input type="submit" value="PAY BACK" class="btn btn-outline-success btn-lg">
+                <br><br><br>
+                <input type="submit" value="Check and Avail" class="btn btn-outline-success btn-lg"> -->
             </form>
             <br><br>
+
+
+            <div>
+                <h1>loan details</h1>
+                <br><br>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      Flat 6% intrest rate is applied for all small cap loan 
+                      <span class="badge badge-primary badge-pill">1</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      applied intrest amount is directly credeted to debt space of user
+                      <span class="badge badge-primary badge-pill">2</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      Upon going with higher cap, intrest rate will increse upon base intrest(6%) based on score, repayment freq and background check
+                      <span class="badge badge-primary badge-pill">3</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        all small cap loan are intended to issue withut reson, only on basis of score : if not able to issue, in that case need to increase score
+                        <span class="badge badge-primary badge-pill">4</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        
+                        <span class="badge badge-primary badge-pill">5</span>
+                    </li>
+                  </ul>
+            </div>
 
 
 

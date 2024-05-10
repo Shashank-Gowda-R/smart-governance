@@ -41,10 +41,13 @@
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
+        <h2 class="float-md-start mb-1">Don Bosco Institute of Technology</h2>
+        <h4 class="float-md-start mb-2">Department of Computer Science and Engineering</h4>
         <!-- Heading include username from database and nav bar -->
         <header class="mb-auto">
             <div>
                 <h3 class="float-md-start mb-0">{{username}}</h3>
+
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link fw-bold py-1 px-0" href="/home">Home</a>
                     <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="/home#pay">Pay</a>
@@ -60,7 +63,7 @@
         <!-- main sectrion content -->
         <main class="px-3">
             <div>
-                <h2 class="hr-lines"> ADMIN </h2>
+                <h2 class="hr-lines">ADMIN</h2>
                 <!-- <h3 class="bal">Balance : {{bal}}</h3> -->
                 <br><br>
             </div>
@@ -73,18 +76,23 @@
             {% endif %}
             {% endwith %}
 
+            <div class="col-lg-6 colMenu">
+                <p>Disburse Specific Grants</p>
+                <a href="/admin/disburse_grants" class="btn btn-outline-light btn-lg">Disburse Grants</a>
+            </div>
+
             <br><br>
             <div class="adm">
-            <div class="bx">
-                <!-- <button type="button" class="btn btn-secondary btn-lg"> -->
+                <div class="bx">
+                    <!-- <button type="button" class="btn btn-secondary btn-lg"> -->
                     Loan Intrest : {{admn.loan_intrest}} <br>
                     Transcationm Fee : {{admn.transcationm_intrest}} <br>
                     Top-up Fee : {{admn.topup_fee}} <br>
                     <hr>
-                    <font color="green">Total Earning : {{admn.total}}</font>  <br>
-                <!-- </button> -->
+                    <font color="green">Total Earning : {{admn.total}}</font> <br>
+                    <!-- </button> -->
+                </div>
             </div>
-        </div>
 
 
 
@@ -96,8 +104,6 @@
 
         <!-- footer section -->
         <footer class="mt-auto text-white-50 foot">
-            <p>Developed by <a href="https://github.com/sahilsgovekar" class="text-white">Sahil Govekar</a> and <a
-                    href="https://twitter.com/sahilsgovekar" class="text-white">S Suhas</a></p>
             <p>Project repo available at <a
                     href="https://github.com/sahilsgovekar/Payment_System_and_Financial_Interface_using_CBDC">github.com/sahilsgovekar</a>
             </p>

@@ -61,9 +61,12 @@
         <main class="px-3">
             <div>
                 <h2 class="hr-lines"> Avail loan </h2>
-                <h3 class="bal">Total Debt : {{cur_ln.debt}}</h3>
-                <h3 class="bal">Credits available : {{cur_ln.credits}}</h3>
-                <h3 class="bal">Score : {{cur_ln.score}}</h3>
+                <div>
+                    <p>Loan details : <a href="/loan/details" class="btn btn-info btn-sm">get details</a></p>
+                </div>
+                <h3 class="bal">Total Debt : {{cur_ln.debt|round(2)}}</h3>
+                <h3 class="bal">Credits available : {{cur_ln.credits|round(2)}}</h3>
+                <h3 class="bal">Score : {{cur_ln.score|round(2)}}</h3>
             </div>
 
             <form action="" method="post">
@@ -92,11 +95,11 @@
 
 
         <!-- footer section -->
-        <footer class="mt-auto text-white-50">
+        <!-- <footer class="mt-auto text-white-50">
             <p>Developed by <a href="https://github.com/sahilsgovekar" class="text-white">Sahil Govekar</a> and <a
                     href="https://twitter.com/sahilsgovekar" class="text-white">S Suhas</a></p>
             <p>Project repo available at <a href="https://github.com/sahilsgovekar/Payment_System_and_Financial_Interface_using_CBDC">github.com/sahilsgovekar</a></p>
-        </footer>
+        </footer> -->
     </div>
 
 

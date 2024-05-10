@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <meta name="description" content="">
-    <meta name="author" content="Sahil Govekar"> -->
 
     <title>CBDC Financial Interface</title>
 
@@ -32,19 +30,16 @@
 
 </head>
 
-
-
-
-
-
 <body class="d-flex h-100 text-center text-bg-dark">
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-
+        <h2 class="float-md-start mb-1">Don Bosco Institute of Technology</h2>
+        <h4 class="float-md-start mb-2">Department of Computer Science and Engineering</h4>
         <!-- Heading include username from database and nav bar -->
         <header class="mb-auto">
             <div>
                 <h3 class="float-md-start mb-0">{{username}}</h3>
+
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link fw-bold py-1 px-0" href="/home">Home</a>
                     <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="/home#pay">Pay</a>
@@ -57,33 +52,42 @@
 
 
 
+
         <!-- main sectrion content -->
         <main class="px-3">
             <div>
-                <h2 class="hr-lines"> Pay loan </h2>
-                <h3 class="bal">Total Debt : {{cur_ln.debt|round(2)}}</h3>
-                <h3 class="bal">Credits available : {{cur_ln.credits|round(2)}}</h3>
-                <h3 class="bal">Score : {{cur_ln.score|round(2)}}</h3>
-                <h3 class="bal">Balance : {{bal|round(2)}}</h3>
+                <h2 class="hr-lines"> Disburse Grants </h2>
             </div>
 
             <form action="" method="post">
                 {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        {% for message in messages %}
-                        <p>{{ message }}</p>
-                        {% endfor %}
-                    {% endif %}
+                {% if messages %}
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+                {% endif %}
                 {% endwith %}
-                <!-- <label for="">username</label> -->
-                <!-- <br>
-                <input type="text" name="username" id=""> -->
                 <br><br>
-                <label for="">amount</label>
+                <ul style="padding: 0;">
+                    {% for schema in schemas_name %}
+                    <li style="list-style-type: none; margin: 5px; display: flex; align-items: center;">
+                        <div style="flex: 1;">
+                            <span style="font-size: x-large; text-transform: capitalize;">{{ schema.schema_name
+                                }}</span>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('disburseGrantsToallUsers', schemename=schema.schema_name) }}"
+                                class="btn btn-outline-success btn-lg">Disburse Grants</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- <label for="">amount</label>
                 <br>
                 <input type="number" name="amount" id="">
-                <br><br>
-                <input type="submit" value="PAY BACK" class="btn btn-outline-success btn-lg">
+                <br><br><br>
+                <input type="submit" value="Check and Avail" class="btn btn-outline-success btn-lg"> -->
             </form>
             <br><br>
 
