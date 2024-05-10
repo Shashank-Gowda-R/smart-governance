@@ -43,10 +43,10 @@
             <i class="fas fa-user"></i>
             <input type="text" placeholder="First Name" name="s_fname" />
           </div>
-          <div class="input-field">
+          <!-- <div class="input-field">
             <i class="fas fa-user"></i>
             <input type="text" placeholder="Last Name" name="s_lname" />
-          </div>
+          </div> -->
           <div class="input-field">
             <i class="fas fa-user"></i>
             <input type="tel" id="phone" name="s_phoneno" placeholder="Phone Number" required>
@@ -68,9 +68,15 @@
               oninput="validateConfirmPassword()" required />
           </div>
           <div id="passwordConfError" style="color: red;"></div>
+          <div class="input-field">
+            <i class="fas fa-key"></i>
+            <input type="text" name="otp" id="otp" placeholder="Enter OTP" />
+          </div>
+          <div id="otp-valid" style="color: red;"></div>
+          <button type="button" class="btn solid" id="send-otp-btn" onclick="sendOTP()">Send OTP</button>
+          <input type="submit" class="btn" value="Sign Up" id="sign-up" name="submit" disabled />
 
-
-          <input type="submit" class="btn" value="Sign Up" name="submit" />
+          <!-- <input type="submit" class="btn" value="Sign Up" name="submit" /> -->
         </form>
       </div>
     </div>
@@ -93,7 +99,6 @@
           <h3>One of us ?</h3>
           <p>
             Already have an Account ?
-
           </p>
           <button class="btn transparent" id="sign-in-btn">
             Sign in
@@ -107,6 +112,41 @@
 
   <script src="{{ url_for('static', filename='ls_app.js') }}"></script>
   <script>
+    async function SendSMS(body, to_number) {
+
+      const twilioAccountSid = '{{ twilio_account_sid }}';
+      const twilioAuthToken = '{{ twilio_auth_token }}';
+      const twilioPhoneNumber = '{{ twilio_phone_number }}';
+
+      const url = `https://api.twilio.com/2010-04-01/Accounts/${twilioAccountSid}/Messages.json`;
+      const basicAuth = 'Basic ' + btoa(twilioAccountSid + ':' + twilioAuthToken);
+
+      const formData = new URLSearchParams();
+      formData.append('From', twilioPhoneNumber);
+      formData.append('To', to_number);
+      formData.append('Body', body);
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': basicAuth,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to send SMS: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     function validatePassword() {
       var password = document.getElementById("password").value;
 
@@ -149,6 +189,48 @@
         document.getElementById("passwordConfError").innerText = "";
       }
     }
+
+    let otpPromise = null;
+
+    async function sendOTP() {
+      if (!otpPromise) {
+        otpPromise = new Promise(async (resolve, reject) => {
+          try {
+            const otp = Math.floor(100000 + Math.random() * 900000);
+            const phoneNumber = document.getElementById("phone").value;
+            const phoneNumberWithCountryCode = "+91" + phoneNumber;
+            await SendSMS(`Your OTP is: ${otp}`, phoneNumberWithCountryCode);
+            window.generatedOTP = otp;
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        });
+      }
+
+      try {
+        await otpPromise;
+      } catch (error) {
+        console.log("Error sending OTP:", error);
+      }
+    }
+
+    function validateOTP() {
+      const enteredOTP = document.getElementById("otp").value;
+      const signUpButton = document.getElementById("sign-up");
+      const errorMessage = document.getElementById("otp-valid");
+
+      if (enteredOTP === window.generatedOTP.toString()) {
+        signUpButton.disabled = false;
+        errorMessage.innerText = "";
+      } else {
+        signUpButton.disabled = true;
+        errorMessage.innerText = "OTP is invalid";
+      }
+    }
+    document.getElementById("send-otp-btn").addEventListener("click", sendOTP);
+    document.getElementById("otp").addEventListener("input", validateOTP);
+
 
   </script>
 

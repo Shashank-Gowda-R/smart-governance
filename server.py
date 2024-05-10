@@ -1,6 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
+import os
+from dotenv import load_dotenv, dotenv_values
+import requests
+from datetime import date, datetime
+from forex_python.converter import CurrencyRates
+import re
+from transcation_blocks import Block, addNewBlock
+
+load_dotenv()
+# Get Twilio credentials from environment variables
+twilio_account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+twilio_auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+twilio_phone_number = os.getenv("TWILIO_PHONE_NUMBER")
 
 # import sqlite3
 from flask_login import (
@@ -11,11 +24,7 @@ from flask_login import (
     current_user,
     logout_user,
 )
-import requests
-from datetime import date, datetime
-from forex_python.converter import CurrencyRates
-import re
-from transcation_blocks import Block, addNewBlock
+
 
 currency = CurrencyRates()
 
@@ -135,7 +144,7 @@ class Govt_Grants(UserMixin, db.Model):
     username = db.Column(db.String(100), primary_key=True)
     grant_received = db.Column(db.Integer)
     schema_eligible = db.Column(db.String(100))
-    schema_eligible_perc = db.Column(db.Integer)
+    # schema_eligible_perc = db.Column(db.Integer)
 
 
 class Govt_Schema(UserMixin, db.Model):
@@ -183,7 +192,7 @@ def login_or_sign_up():
 
     # login
     if request.method == "POST":
-        if request.form["submit"] == "log_in":
+        if request.form["submit"] == "Sign In":
 
             l_username = request.form["l_username"]
             l_password = request.form["l_password"]
@@ -197,12 +206,11 @@ def login_or_sign_up():
                 flash("Password incorrect, PLease Try Again")
                 return redirect(url_for("login_or_sign_up"))
             else:
-
                 login_user(user)
                 return redirect(url_for("home"))
 
         # sign up
-        if request.form["submit"] == "Sign_up":
+        if request.form["submit"] == "Sign Up":
 
             if User.query.filter_by(username=request.form.get("s_username")).first():
                 # User already exists
@@ -211,11 +219,11 @@ def login_or_sign_up():
 
             s_username = request.form["s_username"]
             s_fname = request.form["s_fname"]
-            s_lname = request.form["s_lname"]
+            # s_lname = request.form["s_lname"]
             s_phoneno = request.form["s_phoneno"]
             s_email = request.form["s_email"]
             s_password = request.form["s_password"]
-            print(s_username, s_fname, s_lname, s_phoneno, s_email, s_password)
+            print(s_username, s_fname, s_phoneno, s_email, s_password)
 
             if password_validation(s_password) == 0:
                 flash("Please match the password constrains while choosing password")
@@ -228,7 +236,7 @@ def login_or_sign_up():
             new_user = User(
                 username=s_username,
                 fname=s_fname,
-                lname=s_lname,
+                # lname=s_lname,
                 phoneno=s_phoneno,
                 email=s_email,
                 password=hash_and_salted_password,
@@ -265,7 +273,11 @@ def login_or_sign_up():
             print("new user data inserted into database")
 
     return render_template(
-        "loginorsignup.html", logged_in=current_user.is_authenticated
+        "loginorsignup.html",
+        logged_in=current_user.is_authenticated,
+        twilio_account_sid=twilio_account_sid,
+        twilio_auth_token=twilio_auth_token,
+        twilio_phone_number=twilio_phone_number,
     )
 
 
@@ -283,7 +295,7 @@ def home():
     cur_ln = lnAct.query.filter_by(username=current_user.username).first()
     return render_template(
         "home.html",
-        username=current_user.username,
+        fname=current_user.fname,
         bal=cu_bal.balance,
         cur_ln=cur_ln,
         logged_in=True,
@@ -517,9 +529,7 @@ def loanavail():
             addNewBlock(None)
 
             flash(f"Loan amount of {l_amount} granted sucessfully")
-    return render_template(
-        "avail_loan.html", username=current_user.username, cur_ln=cur_ln
-    )
+    return render_template("avail_loan.html", fname=current_user.fname, cur_ln=cur_ln)
 
 
 @app.route("/loan/pay", methods=["GET", "POST"])
@@ -556,7 +566,7 @@ def loanpay():
             )
             db.session.add(new_trans_ln)
             db.session.commit()
-            blockchainORM.addNewBlock(None)
+            # blockchainORM.addNewBlock(None)
 
             flash(f"Loan amount of {l_amount} Repayed sucessfully")
 
@@ -671,8 +681,8 @@ def admin():
 
 @app.route("/admin/earning", methods=["GET", "POST"])
 def adminearning():
-    admn = Erng.query.filter_by(username="admin").first()
-    return render_template("adminearning.html", admn=admn)
+    admin = Erng.query.filter_by(username="admin").first()
+    return render_template("adminearning.html", admin=admin)
 
 
 @app.route("/admin/login", methods=["GET", "POST"])
@@ -717,7 +727,7 @@ def disburseGrantsToallUsers(schemename):
         grantable_user.grant_received += individualDisbursableamount
         db.session.commit()
 
-    return render_template("displaymessage.html", message="loan dusbursed sucessfully")
+    return render_template("displaymessage.html", message="Disbursed sucessfully")
 
 
 @app.route("/admin/disburse_grants", methods=["GET", "POST"])

@@ -38,19 +38,19 @@
 
 <body class="d-flex h-100 text-center text-bg-dark">
 
-  
+
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
         <!-- Heading include username from database and nav bar -->
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-start mb-0">{{username}}</h3>
+                <h3 class="float-md-start mb-0">{{fname}}</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link fw-bold py-1 px-0" href="/home">Home</a>
                     <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#pay">Pay</a>
                     <a class="nav-link fw-bold py-1 px-0" href="#loan">Loan</a>
-                    <a class="nav-link fw-bold py-1 px-0" href="#">Grants</a>
+                    <a class="nav-link fw-bold py-1 px-0" href="#grant">Grants</a>
                     <a class="nav-link fw-bold py-1 px-0" href="/logout">Logout</a>
                 </nav>
             </div>
@@ -71,7 +71,7 @@
                 <div class="row  justify-content-center spacy">
 
                     <div class="col-lg-6 colMenu">
-                        <h3 class="btn btn-secondary btn-lg"> Balance : {{bal|round(2)}}</h3>
+                        <h3 class="btn btn-secondary btn-lg">Current Balance : {{bal|round(2)}}</h3>
                     </div>
                     <div class="col-lg-6 colMenu">
                         <a href="/topup" class="btn btn-outline-warning btn-lg">Top-up</a>
@@ -122,25 +122,26 @@
 
             </div>
 
-                        <!-- loan -->
-                        <div id="loan">
-                            <h2 class="hr-lines"> Govt Grants </h2>
-            
-                            <h3 class="bal">Total Grants Received : {{cur_ln.debt|round(2)}}</h3>
-                            <!-- <h3 class="bal">Grants Applied for : {{cur_ln.credits}}</h3> -->
-                            <br>
-                            <div class="row  justify-content-center spacy">
-                                <div class="col-lg-6 colMenu">
-                                    <a href="/grants/applyforgrants" class="btn btn-outline-light btn-lg">Check for Available Grants</a>
-                                </div>
-                                <!-- <div class="col-lg-6 colMenu">
+            <!-- grant -->
+            <div id="grant">
+                <h2 class="hr-lines"> Govt Grants </h2>
+
+                <h3 class="bal">Total Grants Received : {{cur_ln.debt|round(2)}}</h3>
+                <!-- <h3 class="bal">Grants Applied for : {{cur_ln.credits}}</h3> -->
+                <br>
+                <div class="row  justify-content-center spacy">
+                    <div class="col-lg-6 colMenu">
+                        <a href="/grants/applyforgrants" class="btn btn-outline-light btn-lg">Check for Available
+                            Grants</a>
+                    </div>
+                    <!-- <div class="col-lg-6 colMenu">
                                     <a href="/loan/pay" class="btn btn-outline-light btn-lg">Pay Loan</a>
                                 </div> -->
-                            </div>
-            
-                        </div>
+                </div>
 
-            
+            </div>
+
+
 
             <!-- investment -->
 
@@ -171,14 +172,13 @@
         <!-- footer section -->
         <footer class="mt-auto text-white-50">
             <hr>
-            <h4>Don Bosco Institute of Technology, Bangalore</h4>
-            <h6>Dept of Computer Science Engg</h6>
-            <br>
-            <p>Developed by 
+            <p>Guide: Dr. Venugeetha Y</p>
+            <p>Developed by
                 <a href="https://twitter.com/sahilsgovekar" class="text-white">Prajwal GS</a> ,
                 <a href="https://twitter.com/sahilsgovekar" class="text-white">Sagar A</a> ,
-                <a href="https://github.com/sahilsgovekar" class="text-white">Sahil Govekar</a> , 
-                <a href="https://twitter.com/sahilsgovekar" class="text-white">Shashank G</a></p>
+                <a href="https://github.com/sahilsgovekar" class="text-white">Sahil Govekar</a> ,
+                <a href="https://twitter.com/sahilsgovekar" class="text-white">Shashank G</a>
+            </p>
             <!-- <p>Project repo available at <a
                     href="https://github.com/sahilsgovekar/Payment_System_and_Financial_Interface_using_CBDC">github.com/sahilsgovekar</a>
             </p> -->
