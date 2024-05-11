@@ -5,10 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <meta name="description" content="">
-    <meta name="author" content="Sahil Govekar"> -->
-
-    <title>CBDC Financial Interface</title>
+    <title>Money Top Up</title>
 
     <!-- Link Section -->
 
@@ -19,11 +16,6 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
-
-    <!-- <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-     -->
-
     <!-- Style for Cover i.e Home -->
 
     <link href="{{ url_for('static', filename='cover.css') }}" rel="stylesheet">
@@ -32,11 +24,6 @@
 
 </head>
 
-
-
-
-
-
 <body class="d-flex h-100 text-center text-bg-dark">
 
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -44,7 +31,7 @@
         <!-- Heading include username from database and nav bar -->
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-start mb-0">{{username}}</h3>
+                <h3 class="float-md-start mb-0">{{fname}}</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link fw-bold py-1 px-0" href="/home">Home</a>
                     <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="/home#pay">Pay</a>
@@ -80,7 +67,7 @@
                 {% endif %}
                 {% endwith %}
 
-                <div class="center">  
+                <div class="center">
                     <select class="form-select szz cmb" name="curr">
                         <option selected>Select the currency</option>
                         <option value="rupee">Rupee</option>
@@ -89,11 +76,11 @@
                         <option value="pounds">Pounds</option>
                         <option value="yen">Yen</option>
                         <option value="rubel">Rubel</option>
-                      </select>
-                
+                    </select>
+
                 </div>
                 <br>
-                <label for="">amount</label>
+                <label for="">Amount</label>
                 <br>
                 <input type="number" name="amount" id="">
                 <br><br><br>
@@ -101,25 +88,27 @@
             </form>
             <br><br>
 
-
-
-
         </main>
 
-
-
-
         <!-- footer section -->
-        <footer class="mt-auto text-white-50 foot">
-            <p>Developed by <a href="https://github.com/sahilsgovekar" class="text-white">Sahil Govekar</a> and <a
-                    href="https://twitter.com/sahilsgovekar" class="text-white">S Suhas</a></p>
-            <p>Project repo available at <a
-                    href="https://github.com/sahilsgovekar/Payment_System_and_Financial_Interface_using_CBDC">github.com/sahilsgovekar</a>
+        <footer class="mt-auto mb-3 text-white-50">
+            <hr>
+            <p style="color: aqua;">Guide: Dr. Venugeetha Y</p>
+            <p class="text-white">Developed by</p>
+            <a href="https://twitter.com/sahilsgovekar" class="btn btn-outline-info"
+                style="text-decoration: none;">Prajwal GS</a>
+            <a href="https://twitter.com/sahilsgovekar" class="btn btn-outline-info"
+                style="text-decoration: none;">Sagar A</a>
+            <a href="https://github.com/sahilsgovekar" class="btn btn-outline-info" style="text-decoration: none;">Sahil
+                Govekar</a>
+            <a href="https://shashank-gowda-r.vercel.app/" class="btn btn-outline-info"
+                style="text-decoration: none;">Shashank Gowda R</a>
+            <p class="mt-3">Project is available at <a href="https://github.com/Shashank-Gowda-R/smart-governance.git"
+                    style="text-decoration: none;"> Repo </a>
             </p>
+            <br>
         </footer>
     </div>
-
-
 
 </body>
 

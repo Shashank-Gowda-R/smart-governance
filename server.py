@@ -187,8 +187,8 @@ def password_validation(password):
         return 0
 
 
-@app.route("/login_or_sign_up", methods=["GET", "POST"])
-def login_or_sign_up():
+@app.route("/login", methods=["GET", "POST"])
+def login():
 
     # login
     if request.method == "POST":
@@ -201,10 +201,10 @@ def login_or_sign_up():
             user = User.query.filter_by(username=l_username).first()
             if not user:
                 flash("this username does not exist, Please Register")
-                return redirect(url_for("login_or_sign_up"))
+                return redirect(url_for("login"))
             elif not check_password_hash(user.password, l_password):
                 flash("Password incorrect, PLease Try Again")
-                return redirect(url_for("login_or_sign_up"))
+                return redirect(url_for("login"))
             else:
                 login_user(user)
                 return redirect(url_for("home"))
@@ -215,7 +215,7 @@ def login_or_sign_up():
             if User.query.filter_by(username=request.form.get("s_username")).first():
                 # User already exists
                 flash("You've already signed up with that username, log in instead!")
-                return redirect(url_for("login_or_sign_up"))
+                return redirect(url_for("login"))
 
             s_username = request.form["s_username"]
             s_fname = request.form["s_fname"]
@@ -227,7 +227,7 @@ def login_or_sign_up():
 
             if password_validation(s_password) == 0:
                 flash("Please match the password constrains while choosing password")
-                return redirect(url_for("login_or_sign_up"))
+                return redirect(url_for("login"))
 
             hash_and_salted_password = generate_password_hash(
                 s_password, method="pbkdf2:sha256", salt_length=8
@@ -270,8 +270,6 @@ def login_or_sign_up():
             # # db.create_all()
             # modelName.__table__.create(db.session.bind, checkfirst=True)
 
-            print("new user data inserted into database")
-
     return render_template(
         "loginorsignup.html",
         logged_in=current_user.is_authenticated,
@@ -283,7 +281,7 @@ def login_or_sign_up():
 
 @app.route("/")
 def main():
-    return redirect(url_for("login_or_sign_up"))
+    return redirect(url_for("login"))
 
 
 # home page or main landing page
@@ -307,7 +305,7 @@ def home():
 def logout():
     logout_user()
     c_u = "null"
-    return redirect(url_for("login_or_sign_up"))
+    return redirect(url_for("login"))
 
 
 # pay section
@@ -358,7 +356,7 @@ def pay_username():
 
     return render_template(
         "pay_username.html",
-        username=current_user.username,
+        fname=current_user.fname,
         logged_in=True,
         bal=fuser.balance,
     )
@@ -369,9 +367,7 @@ def pay_username():
 @login_required
 def pay_qr():
     fuser = remBal.query.filter_by(username=current_user.username).first()
-    return render_template(
-        "pay_qr.html", username=current_user.username, bal=fuser.balance
-    )
+    return render_template("pay_qr.html", fname=current_user.fname, bal=fuser.balance)
 
 
 # phone no pay
@@ -417,7 +413,7 @@ def pay_phoneno():
 
     return render_template(
         "pay_phoneno.html",
-        username=current_user.username,
+        fname=current_user.fname,
         logged_in=True,
         bal=fuser.balance,
     )
@@ -469,7 +465,7 @@ def pay_banktransfer():
                 db.session.commit()
     return render_template(
         "pay_banktransfer.html",
-        username=current_user.username,
+        fname=current_user.fname,
         logged_in=True,
         bal=fuser.balance,
     )
@@ -481,7 +477,7 @@ def history():
     cu_bal = remBal.query.filter_by(username=current_user.username).first()
     trans = clientTranscation.query.all()
     return render_template(
-        "history.html", username=current_user.username, bal=cu_bal.balance, trans=trans
+        "history.html", fname=current_user.fname, bal=cu_bal.balance, trans=trans
     )
 
 
@@ -572,7 +568,7 @@ def loanpay():
 
     return render_template(
         "pay_loan.html",
-        username=current_user.username,
+        fname=current_user.fname,
         cur_ln=cur_ln,
         bal=c_bal.balance,
     )
@@ -627,7 +623,7 @@ def topup():
     return render_template(
         "topup.html",
         bal=c_bal.balance,
-        username=current_user.username,
+        fname=current_user.fname,
     )
 
 
@@ -667,7 +663,7 @@ def applyforgrants():
     schemas_name = Govt_Schema.query.all()
     print(schemas_name)
     return render_template(
-        "applyforgrants.html", username=current_user.username, schemas_name=schemas_name
+        "applyforgrants.html", fname=current_user.fname, schemas_name=schemas_name
     )
 
 

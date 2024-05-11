@@ -5,10 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <meta name="description" content="">
-    <meta name="author" content="Sahil Govekar"> -->
-
-    <title>CBDC Financial Interface</title>
+    <title>Loan Details</title>
 
     <!-- Link Section -->
 
@@ -19,11 +16,6 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
-
-    <!-- <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-     -->
-
     <!-- Style for Cover i.e Home -->
 
     <link href="{{ url_for('static', filename='cover.css') }}" rel="stylesheet">
@@ -31,11 +23,6 @@
     <link href="{{ url_for('static', filename='pay.css') }}" rel="stylesheet">
 
 </head>
-
-
-
-
-
 
 <body class="d-flex h-100 text-center text-bg-dark">
 
@@ -55,67 +42,38 @@
             </div>
         </header>
 
-
-
         <!-- main sectrion content -->
         <main class="px-3">
-            <!-- <div>
-                <h2 class="hr-lines"> {{message}} </h2>
-            </div> -->
-
-
-            <!-- <label for="">amount</label>
-                <br>
-                <input type="number" name="amount" id="">
-                <br><br><br>
-                <input type="submit" value="Check and Avail" class="btn btn-outline-success btn-lg"> -->
-            </form>
-            <br><br>
-
 
             <div>
-                <h1>loan details</h1>
+                <h1>Loan Details</h1>
                 <br><br>
                 <ul class="list-group">
                     <li class="list-group-item d-flex align-items-left">
-                        <span class="badge badge-primary badge-pill">1 </span>Flat 6% intrest rate is applied for all
-                        small cap loan
+                        <span class="badge badge-primary badge-pill">1 </span>A flat 6% interest rate is applied to all
+                        small cap loans.
                     </li>
-                    <li class="list-group-item d-flex align-items-center">
-                        <span class="badge badge-primary badge-pill">2 </span>Applied intrest amount is directly
-                        credeted to debt space of user
+                    <li class="list-group-item d-flex align-items-left">
+                        <span class="badge badge-primary badge-pill">2 </span>The applied interest amount is directly
+                        credited to the user's debt space.
                     </li>
-                    <li class="list-group-item d-flex align-items-center">
-                        <span class="badge badge-primary badge-pill">3 </span>Upon going with higher cap, intrest rate
-                        will increse upon base intrest(6%) based on score, repayment freq and background check
-
+                    <li class="list-group-item d-flex align-items-left">
+                        <span class="badge badge-primary badge-pill">3 </span>Upon opting for a higher cap, the interest
+                        rate will increase based on the base interest rate (6%), the user's score, repayment frequency,
+                        and background check.
                     </li>
-                    <li class="list-group-item d-flex align-items-center">
-                        <span class="badge badge-primary badge-pill">4 </span>All small cap loan are intended to issue
-                        without reason, only on basis of score : if not able to issue, in that case need to increase
-                        score
+                    <li class="list-group-item d-flex align-items-left">
+                        <span class="badge badge-primary badge-pill">4 </span>All small cap loans are intended to be
+                        issued without reason, solely based on the user's score. If unable to issue, the user needs to
+                        increase their score.
                     </li>
 
                 </ul>
             </div>
 
-
-
-
         </main>
 
-
-
-
-        <!-- footer section -->
-        <!-- <footer class="mt-auto text-white-50">
-            <p>Developed by <a href="https://github.com/sahilsgovekar" class="text-white">Sahil Govekar</a> and <a
-                    href="https://twitter.com/sahilsgovekar" class="text-white">S Suhas</a></p>
-            <p>Project repo available at <a href="https://github.com/sahilsgovekar/Payment_System_and_Financial_Interface_using_CBDC">github.com/sahilsgovekar</a></p>
-        </footer> -->
     </div>
-
-
 
 </body>
 
