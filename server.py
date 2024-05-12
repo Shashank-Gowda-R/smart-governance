@@ -7,7 +7,7 @@ import requests
 from datetime import date, datetime
 from forex_python.converter import CurrencyRates
 import re
-from transcation_blocks import Block, addNewBlock
+from transcation_blocks import Block, Blockchain, addNewTransaction
 
 load_dotenv()
 # Get Twilio credentials from environment variables
@@ -40,6 +40,7 @@ db = SQLAlchemy(app)
 # cursor = dbs.cursor()
 
 blockchainORM = Block
+blockchain = Blockchain()
 
 
 # to be codded
@@ -223,7 +224,6 @@ def login():
             s_phoneno = request.form["s_phoneno"]
             s_email = request.form["s_email"]
             s_password = request.form["s_password"]
-            print(s_username, s_fname, s_phoneno, s_email, s_password)
 
             if password_validation(s_password) == 0:
                 flash("Please match the password constrains while choosing password")
@@ -232,6 +232,7 @@ def login():
             hash_and_salted_password = generate_password_hash(
                 s_password, method="pbkdf2:sha256", salt_length=8
             )
+            print(s_username, s_fname, s_phoneno, s_email, hash_and_salted_password)
 
             new_user = User(
                 username=s_username,
@@ -241,19 +242,29 @@ def login():
                 email=s_email,
                 password=hash_and_salted_password,
             )
+            user_dict = {
+                "username": s_username,
+                "first name": s_fname,
+                "phone_number": s_phoneno,
+                "email": s_email,
+                "password": hash_and_salted_password,
+            }
             db.session.add(new_user)
             db.session.commit()
-            addNewBlock(None)
+            addNewTransaction(user_dict)
+            blockchain.print_blocks()
 
             # cursor.execute(f"INSERT INTO users VALUES({s_username}, {s_fname}, {s_lname}, {s_phoneno}, {s_email}, {hash_and_salted_password})")
 
             new_ub = remBal(username=s_username, balance=1000)
             db.session.add(new_ub)
             db.session.commit()
-            addNewBlock(None)
+            user_balance = {"username": s_username, "balance": 1000}
+            addNewTransaction(user_balance)
 
             new_lact = lnAct(username=s_username, debt=0, credits=500, score=500)
-
+            loan_act = {"username": s_username, "debt": 0, "credits": 500, "score": 500}
+            addNewTransaction(loan_act)
             db.session.add(new_lact)
             db.session.commit()
 
@@ -522,7 +533,7 @@ def loanavail():
             )
             db.session.add(new_trans_ln)
             db.session.commit()
-            addNewBlock(None)
+            addNewTransaction(None)
 
             flash(f"Loan amount of {l_amount} granted sucessfully")
     return render_template("avail_loan.html", fname=current_user.fname, cur_ln=cur_ln)
@@ -643,6 +654,7 @@ def addbankacc():
             db.session.commit()
             flash("Account Added Sucessfully")
     return render_template("addbankacc.html", username=current_user.fname)
+
 
 @app.route("/grants/apply-for_curr-schema/<schemename>")
 def applyForCurrentSchema(schemename):

@@ -1,63 +1,93 @@
-import datetime
 import hashlib
-import random
+import json
+from time import time
+
 
 class Block:
-    def __init__(self, index, timestamp, data, previous_hash):
-        self.index = index
-        self.timestamp = timestamp
-        self.data = data
-        self.previous_hash = previous_hash
-        self.hash = self.calculate_hash()
+    def __init__(self, **kwargs):
+        self.index = kwargs.get("index")
+        self.timestamp = kwargs.get("timestamp")
+        self.data = kwargs.get("data")
+        self.previous_hash = kwargs.get("previous_hash")
+        self.hash = kwargs.get("hash", self.calculate_hash())
 
     def calculate_hash(self):
-        return hashlib.sha256(str(self.index).encode() + 
-                               str(self.timestamp).encode() + 
-                               str(self.data).encode() + 
-                               str(self.previous_hash).encode()).hexdigest()
+        return hashlib.sha256(
+            str(self.index).encode()
+            + str(self.timestamp).encode()
+            + json.dumps(self.data).encode()
+            + self.previous_hash.encode()
+        ).hexdigest()
 
-def generate_random_block(previous_block):
-    index = previous_block.index + 1
-    timestamp = datetime.datetime.now()
-    data = f"Random data for block {index}"
-    previous_hash = previous_block.hash
-    return Block(index, timestamp, data, previous_hash)
 
-def print_blockchain(blocks):
-    for block in blocks:
-        # print(f"Index: {block.index}")
-        print(f"Timestamp: {block.timestamp}")
-        print(f"Data: {block.data}")
-        print(f"Previous Hash: {block.previous_hash}")
-        print(f"Hash: {block.hash}")
-        print("-" * 50)
+class Blockchain:
+    def __init__(self):
+        self.chain = self.load_blockchain()  # Load blockchain from file
+        if not self.chain:
+            self.chain = [self.create_genesis_block()]
+            self.save_blockchain()
 
-def main():
-    # Create genesis block
-    genesis_block = Block(0, datetime.datetime.now(), "Genesis Block", "0")
-    blockchain = [genesis_block]
+    def create_genesis_block(self):
+        return Block(0, time(), "Genesis Block", "0")
 
-    # Generate 9 additional random blocks
-    for _ in range(3):
-        new_block = generate_random_block(blockchain[-1])
-        blockchain.append(new_block)
+    def get_latest_block(self):
+        return self.chain[-1]
 
-    # Print the blockchain
-    print_blockchain(blockchain)
+    def add_block(self, new_block):
+        new_block.previous_hash = self.get_latest_block().hash
+        new_block.hash = new_block.calculate_hash()
+        self.chain.append(new_block)
+        self.save_blockchain()
 
-def addNewBlock(blockcount):
-    block_no = random.randint(1200, 3400)
-    genesis_block = Block(block_no, datetime.datetime.now(), "Genesis Block", "0")
-    blockchain = [genesis_block]
+    def is_chain_valid(self):
+        for i in range(1, len(self.chain)):
+            current_block = self.chain[i]
+            previous_block = self.chain[i - 1]
+            if current_block.hash != current_block.calculate_hash():
+                return False
+            if current_block.previous_hash != previous_block.hash:
+                return False
+        return True
 
-    # Generate 9 additional random blocks
-    for _ in range(3):
-        new_block = generate_random_block(blockchain[-1])
-        blockchain.append(new_block)
+    def print_blocks(self):
+        for block in self.chain:
+            print(f"Block Index: {block.index}")
+            print(f"Timestamp: {block.timestamp}")
+            print(f"Data: {block.data}")
+            print(f"Previous Hash: {block.previous_hash}")
+            print(f"Hash: {block.hash}")
+            print()
 
-    # Print the blockchain
-    print_blockchain(blockchain)
-    
+    def save_blockchain(self):
+        with open("blockchain.json", "w") as f:
+            json.dump([vars(block) for block in self.chain], f)
 
-if __name__ == "__main__":
-    main()
+    def load_blockchain(self):
+        try:
+            with open("blockchain.json", "r") as f:
+                chain_data = json.load(f)
+                return [Block(**block_data) for block_data in chain_data]
+        except (IOError, json.JSONDecodeError):
+            return None
+
+
+blockchain = Blockchain()
+print("Initial blockchain:")
+blockchain.print_blocks()
+
+
+def addNewTransaction(data):
+    blockchain.add_block(
+        Block(
+            index=len(blockchain.chain),
+            timestamp=time(),
+            data=data,
+            previous_hash=blockchain.get_latest_block().hash,
+        )
+    )
+
+
+# Print blockchain after adding blocks
+print("\nBlockchain after adding blocks:")
+# addNewTransaction("Sample transaction data")
+blockchain.print_blocks()
