@@ -475,7 +475,7 @@ def pay_banktransfer():
 @login_required
 def history():
     cu_bal = remBal.query.filter_by(username=current_user.username).first()
-    trans = clientTranscation.query.all()
+    trans = clientTranscation.query.filter_by(f_username=current_user.username).all()
     return render_template(
         "history.html", fname=current_user.fname, bal=cu_bal.balance, trans=trans
     )
@@ -642,7 +642,7 @@ def addbankacc():
             db.session.add(new_acc)
             db.session.commit()
             flash("Account Added Sucessfully")
-
+    return render_template("addbankacc.html", username=current_user.fname)
 
 @app.route("/grants/apply-for_curr-schema/<schemename>")
 def applyForCurrentSchema(schemename):
