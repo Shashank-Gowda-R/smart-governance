@@ -696,7 +696,7 @@ def adminearning():
 @app.route("/admin/login", methods=["GET", "POST"])
 def adminlogin():
     if request.method == "POST":
-        if request.form["submit"] == "admin_log_in":
+        if request.form["submit"] == "Log In":
             a_username = request.form["a_username"]
             a_password = request.form["a_password"]
             print(a_password, a_username)

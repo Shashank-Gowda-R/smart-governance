@@ -21,6 +21,13 @@
 
     <link href="{{ url_for('static', filename='cover.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='homecss.css') }}" rel="stylesheet">
+    <style>
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    </style>
 
 </head>
 
@@ -48,7 +55,7 @@
             <!-- pay -->
             <div>
 
-                <h3 class="bal"> Balance : {{bal}}</h3>
+                <h3 class="bal"> Balance :<span>&#8377;</span> {{bal}}</h3>
 
                 <div class="container my-3">
                     <h2>Transactions</h2>
@@ -74,7 +81,7 @@
                             {% for tr in trans %}
                             <!-- {% if trans.f_username == c_u %} -->
                             <tr>
-                                <th scope="row">{{loop.index}}</th>
+                                <!-- <th scope="row">{{loop.index}}</th> -->
                                 <td>{{tr.transcation_id}}</td>
                                 <td>{{tr.t_username}}</td>
                                 <td>{{tr.amount}}</td>
