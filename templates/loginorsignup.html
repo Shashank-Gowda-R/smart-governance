@@ -199,7 +199,7 @@
             const otp = Math.floor(100000 + Math.random() * 900000);
             const phoneNumber = document.getElementById("phone").value;
             const phoneNumberWithCountryCode = "+91" + phoneNumber;
-            await SendSMS(`Your OTP is: ${otp}`, phoneNumberWithCountryCode);
+            await SendSMS(`Your OTP for new payment system is: ${otp}`, phoneNumberWithCountryCode);
             window.generatedOTP = otp;
             resolve();
           } catch (error) {
